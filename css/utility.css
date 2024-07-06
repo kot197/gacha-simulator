@@ -1,0 +1,51 @@
+html, body {
+    font-family: 'Open Sans', sans-serif;
+}
+
+body {
+    background-color: var(--dark);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Raleway', sans-serif;
+}
+
+a {
+    color: var(--dark);
+    text-decoration: none;
+}
+
+.btn {
+    padding: 1rem 2rem;
+    border-radius: 3rem;
+    font-weight: 600;
+    background-color: transparent;
+    color: #fff;
+    border: 1px solid #fff;
+    transition: var(--trans);
+}
+
+.btn:hover {
+    background-color: #fff;
+    color: var(--dark);
+}
+
+.flex {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container {
+    max-width: 1320px;
+    padding: 0 1rem;
+    margin: 0 auto;
+}
+
+.sm-title {
+    font-weight: 200;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #fff;
+}
