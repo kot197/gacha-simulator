@@ -2,7 +2,9 @@
     --yellow: #fde82c;
     --light-grey: #f7f7f7;
     --dark: #0e1010;
+    --light: #1c2020;
     --trans: all 0.3s ease-in-out;
+    --purple: #6b0acc;
 }
 
 .site-logo {
@@ -165,6 +167,26 @@ header {
     left: 0 !important;
 }
 
+.center-absolute {
+    position: absolute;
+    width: auto;
+    height: auto;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.warps .btn {
+    margin: 1rem 1rem;
+    color: var(--dark);
+    border: 1px solid var(--dark);
+}
+
+.warps .btn:hover {
+    background-color: var(--dark);
+    color: #fff;
+}
+
 /* KEYFRAMES */
 @keyframes fade-up {
     0% {
@@ -233,6 +255,40 @@ header {
     }
 }
 
+/* WARP RECORDS */
+#warp-records {
+    text-align: center;
+    color: #fff;
+    letter-spacing: 5px;
+}
+
+#warp-records .container {
+    background-color: var(--light);
+    justify-content: flex-start;
+    max-width: 1620px;
+    padding: 1rem 2rem;
+    margin-top: 3rem;
+}
+
+.warp-item {
+    flex-direction: column;
+    margin: 1rem 0;
+    color: #fff;
+    background-image: linear-gradient(var(--dark), var(--purple));
+    border-radius: 0.5rem;
+    border: 1px solid #fff;
+}
+
+.warp-item img {
+    width: 125px;
+    height: 125px;
+    object-fit: contain;
+}
+
+.warp-item h4 {
+    letter-spacing: 0;
+}
+
 /* FOOTER */
 footer {
     padding: 4rem 0;
@@ -240,5 +296,6 @@ footer {
 }
 
 footer span {
+    color: var(--yellow);
     font-weight: 600;
 }
