@@ -22,6 +22,7 @@ StartWarpBtn.addEventListener('click', () => {
 LimitedBanner.addEventListener('click', () => {
     LimitedBanner.parentElement.style.zIndex = 45
     WarpWrapper.classList.toggle("on-right");
+    LimitedBanner.classList.toggle("limited-banner-selected");
 
     if(WarpWrapper.classList.contains('on-right')) {
         WarpWrapper.style.animation = "move-right 1s";
@@ -34,6 +35,7 @@ LimitedBanner.addEventListener('click', () => {
 StandardBanner.addEventListener('click', () => {
     StandardBanner.parentElement.style.zIndex = 45
     WarpWrapper.classList.toggle("on-left");
+    StandardBanner.classList.toggle("standard-banner-selected");
 
     if(WarpWrapper.classList.contains('on-left')) {
         WarpWrapper.style.animation = "move-left 1s";

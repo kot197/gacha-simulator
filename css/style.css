@@ -121,6 +121,13 @@ header {
     padding: 2rem 0;
 }
 
+.limited-banner-selected {
+    background: url(../assets/firefly.jpg) center/cover no-repeat !important;
+}
+
+.standard-banner-selected {
+    background: url(../assets/standard.jpg) center/cover no-repeat !important;
+}
 
 /*LIMITED BANNER */
 #limited-banner {
@@ -129,7 +136,7 @@ header {
     transition: var(--trans);
 }
 
-#limited-banner:hover {
+#limited-banner:not(.limited-banner-selected):hover {
     background: linear-gradient(var(--dark),rgba(0,0,0,0) 50%, var(--dark)), url(../assets/firefly.jpg) center/cover no-repeat;
     transform: scale(1.1);
 }
@@ -141,7 +148,7 @@ header {
     transition: var(--trans);
 }
 
-#standard-banner:hover {
+#standard-banner:not(.standard-banner-selected):hover {
     background: linear-gradient(var(--dark),rgba(0,0,0,0) 50%, var(--dark)), url(../assets/standard.jpg) center/cover no-repeat;
     transform: scale(1.1);
 }
