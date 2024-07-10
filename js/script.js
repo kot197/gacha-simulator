@@ -7,6 +7,18 @@ const LimitedBanner = document.getElementById('limited-banner');
 const StandardBanner = document.getElementById('standard-banner');
 const WarpWrapper = document.getElementById('warp-wrapper');
 
+const UIDText = document.getElementById('uid');
+
+if (typeof(Storage) !== "undefined") {
+    // Store
+    localStorage.setItem("uid", crypto.randomUUID());
+
+    // Retrieve
+    UIDText.innerHTML = localStorage.getItem("uid");
+} else {
+    // Sorry! No Web Storage support..
+}
+
 StartWarpBtn.addEventListener('click', () => {
     Video.classList.toggle("hide");
     HeaderWrapper.style.display = "none";
@@ -46,3 +58,4 @@ StandardBanner.addEventListener('click', () => {
 });
 
 console.log("Hello world!");
+

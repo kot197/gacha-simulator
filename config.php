@@ -1,6 +1,6 @@
 <?php
 
 $host = 'localhost';
-$db = 'firstdb';
+$db = 'gacha_sim';
 $user = 'root';
 $password = '';

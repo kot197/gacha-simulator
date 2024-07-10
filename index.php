@@ -63,6 +63,7 @@
     </header>
     <section id="warp-records">
         <h1>Warp Records</h3>
+        <h5>UID: <span id="uid">xxxx</span></h5>
         <div class="container flex">
             <div class="warp-item flex">
                 <img src="assets/Character/Character_Yanqing_Icon.webp">

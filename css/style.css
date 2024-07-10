@@ -277,6 +277,10 @@ header {
     margin-top: 3rem;
 }
 
+#warp-records h5 {
+    letter-spacing: 2px !important;
+}
+
 .warp-item {
     flex-direction: column;
     margin: 1rem 0;
