@@ -16,6 +16,9 @@
     <link rel = "stylesheet" href = "css/responsive.css">
 </head>
 <body>
+    <?php
+        $pdo = require 'connect.php';
+    ?>
     <!-- navbar -->
     <nav class="navbar">
         <div class="container flex">
@@ -62,7 +65,7 @@
         <h1>Warp Records</h3>
         <div class="container flex">
             <div class="warp-item flex">
-                <img src="assets/Character_Yanqing_Icon.webp">
+                <img src="assets/Character/Character_Yanqing_Icon.webp">
                 <h4>Yanqing</h4>
             </div>
         </div>
