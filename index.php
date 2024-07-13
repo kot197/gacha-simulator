@@ -17,7 +17,7 @@
 </head>
 <body>
     <?php
-        $pdo = require 'connect.php';
+        //$pdo = require 'connect.php';
     ?>
     <!-- navbar -->
     <nav class="navbar">
@@ -55,8 +55,8 @@
             </div>
             <div id="warp-wrapper">
                 <div class="warps center-absolute">
-                    <button class="btn">Warp x1</button>
-                    <button class="btn">Warp x10</button>
+                    <button id="warp_x1" class="btn">Warp x1</button>
+                    <button id="warp_x10" class="btn">Warp x10</button>
                 </div>
             </div>
         </div>

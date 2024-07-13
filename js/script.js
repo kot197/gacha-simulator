@@ -9,6 +9,9 @@ const WarpWrapper = document.getElementById('warp-wrapper');
 
 const UIDText = document.getElementById('uid');
 
+const Warp_1_Btn = document.getElementById('warp_x1');
+const Warp_10_Btn = document.getElementById('warp_x10');
+
 if (typeof(Storage) !== "undefined") {
     // Store
     localStorage.setItem("uid", crypto.randomUUID());
@@ -56,6 +59,30 @@ StandardBanner.addEventListener('click', () => {
         WarpWrapper.style.animation = "pull-back-right 1s";
     }
 });
+
+Warp_1_Btn.addEventListener('click', () => {
+    if(warp() == "SSR") {
+        if(Math.random() < 0.5) {
+            
+        } else {
+
+        }
+    }
+});
+
+function warp() {
+    const randomNum = Math.random();
+    
+    if (randomNum < 0.006) {
+        return "SSR";
+    }
+
+    if (randomNum < 0.057) {
+        return "SR";
+    }
+
+    return "None";
+}
 
 console.log("Hello world!");
 
