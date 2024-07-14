@@ -12,12 +12,54 @@ const UIDText = document.getElementById('uid');
 const Warp_1_Btn = document.getElementById('warp_x1');
 const Warp_10_Btn = document.getElementById('warp_x10');
 
+const fireflyBannerIndex = [25, 35, 50, 29, 36, 30, 49, 33, // SSR Characters
+    1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21, // SR Characters
+    51,67,70,73,80,87,88,95,98,100,102,111,116,118,119,122,127,133,134,136,138,144,145,52,55,57,65,66,68,71,72,74,83,90,99,101,103,105,106,112,117,125,128,146 // Light Cones
+];
+
+let fireflyBannerArrSSR = [];
+
+// Check if there is support for local storage
 if (typeof(Storage) !== "undefined") {
-    // Store
-    localStorage.setItem("uid", crypto.randomUUID());
+    let uid;
+    uid = localStorage.getItem("uid");
+
+    // Check if uid exists in local storage
+    if(isEmpty(uid)) {
+        // Store
+        localStorage.setItem("uid", crypto.randomUUID());
+        uid = localStorage.getItem("uid");
+
+        // Body data to be send in POST request
+        let body_data = {
+            user_uid: uid
+        }
+
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json' // Set the content type to JSON
+            },
+            body: JSON.stringify(body_data) // Convert the data object to a JSON string
+        };
+
+        fetch('http://localhost/gacha-simulator/api/user/create.php', options)
+                .then(response => {
+                        if(!response.ok) {
+                            throw new Error("Network response was not ok " + response.statusText);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log('Success:', data);
+                    })
+                    .catch(error => {
+                        console.error("There was a problem with the fetch operation:", error);
+                    });
+    }
 
     // Retrieve
-    UIDText.innerHTML = localStorage.getItem("uid");
+    UIDText.innerHTML = uid;
 } else {
     // Sorry! No Web Storage support..
 }
@@ -61,6 +103,24 @@ StandardBanner.addEventListener('click', () => {
 });
 
 Warp_1_Btn.addEventListener('click', () => {
+    if(fireflyBannerArrSSR.length === 0) {
+        fireflyBannerSSRIndex.forEach((index) => {
+            fetch('http://localhost/gacha-simulator/api/entity/read_single.php?id=${index}')
+                .then(response => {
+                    if(!response.ok) {
+                        throw new Error("Network response was not ok " + response.statusText);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    fireflyBannerArrSSR.push(data);
+                })
+                .catch(error => {
+                    console.error("There was a problem with the fetch operation:", error);
+                });
+        });
+    }
+
     if(warp() == "SSR") {
         if(Math.random() < 0.5) {
             
@@ -82,6 +142,16 @@ function warp() {
     }
 
     return "None";
+}
+
+function isEmpty(value) {
+    return (
+      value === undefined || 
+      value === null || 
+      value === "" || 
+      (Array.isArray(value) && value.length === 0) || 
+      (typeof value === "object" && Object.keys(value).length === 0)
+    );
 }
 
 console.log("Hello world!");

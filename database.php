@@ -13,10 +13,6 @@ class Database {
 	
 		try {
 			$this->conn = new PDO($dsn, $this->user, $this->password, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
-	
-			if ($this->conn) {
-				echo "Connected to the $this->db database successfully!";
-			}
 		} catch (PDOException $e) {
 			echo $e->getMessage();
 		}
