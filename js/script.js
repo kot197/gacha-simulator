@@ -12,12 +12,11 @@ const UIDText = document.getElementById('uid');
 const Warp_1_Btn = document.getElementById('warp_x1');
 const Warp_10_Btn = document.getElementById('warp_x10');
 
-const fireflyBannerIndex = [25, 35, 50, 29, 36, 30, 49, 33, // SSR Characters
-    1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21, // SR Characters
-    51,67,70,73,80,87,88,95,98,100,102,111,116,118,119,122,127,133,134,136,138,144,145,52,55,57,65,66,68,71,72,74,83,90,99,101,103,105,106,112,117,125,128,146 // Light Cones
-];
+const WarpItemsWrapper = document.getElementById('warp-items-wrapper');
 
-let fireflyBannerArrSSR = [];
+let fireflyBannerData;
+
+let basePath = 'C:\\xampp\\htdocs\\gacha-simulator\\';
 
 // Check if there is support for local storage
 if (typeof(Storage) !== "undefined") {
@@ -64,6 +63,25 @@ if (typeof(Storage) !== "undefined") {
     // Sorry! No Web Storage support..
 }
 
+if(isEmpty(fireflyBannerData)) {
+    fetch('http://localhost/gacha-simulator/api/entity/read_banner.php?banner_name=Firefly%20Banner')
+        .then(response => {
+            if(!response.ok) {
+                throw new Error("Network response was not ok " + response.statusText);
+            }
+            console.log(response);
+            return response.json();
+        })
+        .then(data => {
+            fireflyBannerData = data;
+            console.log(fireflyBannerData);
+        })
+        .catch(error => {
+            console.error("There was a problem with the fetch operation:", error);
+        });
+}
+
+
 StartWarpBtn.addEventListener('click', () => {
     Video.classList.toggle("hide");
     HeaderWrapper.style.display = "none";
@@ -103,45 +121,67 @@ StandardBanner.addEventListener('click', () => {
 });
 
 Warp_1_Btn.addEventListener('click', () => {
-    if(fireflyBannerArrSSR.length === 0) {
-        fireflyBannerSSRIndex.forEach((index) => {
-            fetch('http://localhost/gacha-simulator/api/entity/read_single.php?id=${index}')
-                .then(response => {
-                    if(!response.ok) {
-                        throw new Error("Network response was not ok " + response.statusText);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    fireflyBannerArrSSR.push(data);
-                })
-                .catch(error => {
-                    console.error("There was a problem with the fetch operation:", error);
-                });
-        });
-    }
-
-    if(warp() == "SSR") {
-        if(Math.random() < 0.5) {
+    /*
+    const findResult = fireflyBannerData.data.find(item => item.entity_name === 'Firefly');
             
-        } else {
+    addWarpItem(findResult);
+    */
 
-        }
+    switch(warp()) {
+        case "SSR":
+            // 50/50
+            if(Math.random() < 0.5) {
+                const findResult = fireflyBannerData.data.find(item => item.entity_name === 'Firefly');
+                
+                addWarpItem(findResult);
+                console.log("Warp: Firefly");
+            } else {
+                const findResult = fireflyBannerData.data.filter(item => item.rarity === 3 && item.rate_up === 1);
+                
+                const randomIndex = Math.floor(Math.random() * findResult.length);
+                addWarpItem(findResult[randomIndex]);
+                console.log("Warp: SSR");
+            }
+
+            break;
+        case "SR":
+            // 50/50
+            if(Math.random() < 0.5) {
+                const findResult = fireflyBannerData.data.filter(item => item.rarity === 2 && item.rate_up === 1);
+                
+                const randomIndex = Math.floor(Math.random() * findResult.length);
+                addWarpItem(findResult[randomIndex]);
+            } else {
+                const findResult = fireflyBannerData.data.filter(item => item.rarity === 2 && item.rate_up === 0);
+                
+                const randomIndex = Math.floor(Math.random() * findResult.length);
+                addWarpItem(findResult[randomIndex]);
+            }
+
+            break;
+        case "R":
+            const findResult = fireflyBannerData.data.filter(item => item.rarity === 1);
+                
+            const randomIndex = Math.floor(Math.random() * findResult.length);
+            addWarpItem(findResult[randomIndex]);
+
+            break;
+        default:
     }
 });
 
 function warp() {
     const randomNum = Math.random();
-    
+    console.log(randomNum);
     if (randomNum < 0.006) {
         return "SSR";
     }
 
-    if (randomNum < 0.057) {
+    if (randomNum < 0.57) {
         return "SR";
     }
 
-    return "None";
+    return "R";
 }
 
 function isEmpty(value) {
@@ -154,5 +194,38 @@ function isEmpty(value) {
     );
 }
 
-console.log("Hello world!");
+function addWarpItem(entity) {
+    // div
+    const newDiv = document.createElement('div');
+
+    // Condition for card bg color
+    classNames = 'warp-item flex'
+    switch (entity.rarity) {
+    case 1:
+        classNames = classNames + ' R'
+        break;
+    case 2:
+        classNames = classNames + ' SR'
+        break;
+    case 3:
+        classNames = classNames + ' SSR'
+        break;
+    default:
+        // Code to be executed if expression doesn't match any case
+    }
+    newDiv.className = classNames
+    
+    // img
+    const newImg = document.createElement('img');
+    newImg.src = entity.file_path.replace(basePath, '');
+
+    // h4
+    const newH4 = document.createElement('h4');
+    newH4.innerHTML = entity.entity_name;
+
+    // Add elements to their parents
+    newDiv.appendChild(newImg);
+    newDiv.appendChild(newH4);
+    WarpItemsWrapper.appendChild(newDiv);
+}
 

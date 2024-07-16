@@ -165,4 +165,29 @@ class Entity {
 
         return false;
     }
+
+    // Get Entities of Firefly Banner
+    public function read_banner(string $banner_name) {
+        // Create Query
+        $query = 'SELECT e.entity_id, e.entity_type, e.entity_name, e.file_path, e.rarity, e.created_at AS entity_created_at,
+	        b.banner_id, b.banner_type, b.banner_name, b.created_at AS banner_created_at, eb.rate_up
+                FROM entities e
+                JOIN entity_banners eb ON e.entity_id = eb.entity_id
+                JOIN banners b ON eb.banner_id = b.banner_id
+                WHERE b.banner_name = :banner_name';
+
+        // Prepare statement
+        $stmt = $this->conn->prepare($query);
+
+        // Clean data
+        $banner_name = htmlspecialchars(strip_tags($banner_name));
+
+        // Bind data
+        $stmt->bindParam(':banner_name', $banner_name);
+
+        // Execute query
+        $stmt->execute();
+
+        return $stmt;
+    }
 }

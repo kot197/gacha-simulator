@@ -5,6 +5,8 @@
     --light: #1c2020;
     --trans: all 0.3s ease-in-out;
     --purple: #6b0acc;
+    --orange: #e7bc2e;
+    --blue: #1f70eb;
 }
 
 .site-logo {
@@ -273,8 +275,10 @@ header {
     background-color: var(--light);
     justify-content: flex-start;
     max-width: 1620px;
-    padding: 1rem 2rem;
+    padding: 1rem 1rem;
     margin-top: 3rem;
+    flex-wrap: wrap;
+    overflow: hidden;
 }
 
 #warp-records h5 {
@@ -283,17 +287,31 @@ header {
 
 .warp-item {
     flex-direction: column;
-    margin: 1rem 0;
+    margin: 1rem 1rem;
     color: #fff;
-    background-image: linear-gradient(var(--dark), var(--purple));
     border-radius: 0.5rem;
     border: 1px solid #fff;
+    width: 125px;
+    height: 145px;
+    offset: 10px;
+}
+
+.R {
+    background-image: linear-gradient(var(--dark), var(--blue));
+}
+
+.SR {
+    background-image: linear-gradient(var(--dark), var(--purple));
+}
+
+.SSR {
+    background-image: linear-gradient(var(--dark), var(--orange));
 }
 
 .warp-item img {
     width: 125px;
     height: 125px;
-    object-fit: contain;
+    object-fit: cover;
 }
 
 .warp-item h4 {
