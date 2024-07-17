@@ -292,8 +292,10 @@ header {
     border-radius: 0.5rem;
     border: 1px solid #fff;
     width: 125px;
-    height: 145px;
+    min-height: 145px;
+    height: auto;
     offset: 10px;
+    justify-content: flex-start;
 }
 
 .R {
@@ -312,10 +314,15 @@ header {
     width: 125px;
     height: 125px;
     object-fit: cover;
+    transform: translateY(-20%);
+    margin-bottom: -25px;
 }
 
 .warp-item h4 {
     letter-spacing: 0;
+    margin: auto;
+    height: 40px;
+    align-items: center;
 }
 
 /* FOOTER */

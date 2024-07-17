@@ -5,7 +5,6 @@ class User {
     private $table = 'users';
 
     // User properties
-    public $user_id;
     public $user_uid; 
     public $created_at;
 

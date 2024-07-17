@@ -28,7 +28,7 @@
             extract($row);
 
             $warp_item = array(
-                'user_id' => $user_id,
+                'user_uid' => $user_uid,
                 'entity_id' => $entity_id,
                 'banner_id' => $banner_id,
                 'created_at' => $created_at

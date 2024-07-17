@@ -6,7 +6,7 @@ class Warp {
 
     // Warp properties
     public $warp_id;
-    public $user_id; 
+    public $user_uid; 
     public $entity_id;
     public $banner_id;
     public $created_at;
@@ -36,7 +36,7 @@ class Warp {
         // Create query
         $query = 'INSERT INTO ' . $this->table . '
             SET
-                user_id = :user_id,
+                user_uid = :user_uid,
                 entity_id = :entity_id,
                 banner_id = :banner_id,
                 created_at = :created_at';
@@ -45,13 +45,13 @@ class Warp {
         $stmt = $this->conn->prepare($query);
 
         // Clean data
-        $this->user_id = htmlspecialchars(strip_tags($this->user_id));
+        $this->user_uid = htmlspecialchars(strip_tags($this->user_uid));
         $this->entity_id = htmlspecialchars(strip_tags($this->entity_id));
         $this->banner_id = htmlspecialchars(strip_tags($this->banner_id));
         $this->created_at = htmlspecialchars(strip_tags($this->created_at));
 
         // Bind data
-        $stmt->bindParam(':user_id', $this->user_id);
+        $stmt->bindParam(':user_uid', $this->user_uid);
         $stmt->bindParam(':entity_id', $this->entity_id);
         $stmt->bindParam(':banner_id', $this->banner_id);
         $stmt->bindParam(':created_at', $this->created_at);

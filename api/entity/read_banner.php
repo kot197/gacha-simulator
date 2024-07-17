@@ -35,6 +35,7 @@
                 'entity_id' => $entity_id,
                 'entity_type' => $entity_type,
                 'entity_name' => $entity_name,
+                'banner_id' => $banner_id,
                 'file_path' => $file_path,
                 'rarity' => $rarity,
                 'created_at' => $entity_created_at,

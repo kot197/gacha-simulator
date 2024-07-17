@@ -28,7 +28,6 @@
             extract($row);
 
             $user_item = array(
-                'user_id' => $user_id,
                 'user_uid' => $user_uid,
                 'created_at' => $created_at
             );

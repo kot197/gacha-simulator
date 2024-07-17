@@ -15,12 +15,13 @@ const Warp_10_Btn = document.getElementById('warp_x10');
 const WarpItemsWrapper = document.getElementById('warp-items-wrapper');
 
 let fireflyBannerData;
+let warpRecords;
 
 let basePath = 'C:\\xampp\\htdocs\\gacha-simulator\\';
+let uid;
 
 // Check if there is support for local storage
 if (typeof(Storage) !== "undefined") {
-    let uid;
     uid = localStorage.getItem("uid");
 
     // Check if uid exists in local storage
@@ -75,12 +76,34 @@ if(isEmpty(fireflyBannerData)) {
         .then(data => {
             fireflyBannerData = data;
             console.log(fireflyBannerData);
+
+            if(isEmpty(warpRecords)) {
+                fetch('http://localhost/gacha-simulator/api/warp/read.php')
+                    .then(response => {
+                        if(!response.ok) {
+                            throw new Error("Network response was not ok " + response.statusText);
+                        }
+                        console.log(response);
+                        return response.json();
+                    })
+                    .then(data => {
+                        warpRecords = data;
+                        console.log(warpRecords);
+                        warpRecords.data.forEach(warp => {
+                            const findResult = fireflyBannerData.data.find(item => item.entity_id === warp.entity_id);
+
+                            addWarpItem(findResult);
+                        });
+                    })
+                    .catch(error => {
+                        console.error("There was a problem with the fetch operation:", error);
+                    });
+            }
         })
         .catch(error => {
             console.error("There was a problem with the fetch operation:", error);
         });
 }
-
 
 StartWarpBtn.addEventListener('click', () => {
     Video.classList.toggle("hide");
@@ -133,12 +156,14 @@ Warp_1_Btn.addEventListener('click', () => {
             if(Math.random() < 0.5) {
                 const findResult = fireflyBannerData.data.find(item => item.entity_name === 'Firefly');
                 
+                insertWarpToTable(findResult);
                 addWarpItem(findResult);
                 console.log("Warp: Firefly");
             } else {
                 const findResult = fireflyBannerData.data.filter(item => item.rarity === 3 && item.rate_up === 1);
                 
                 const randomIndex = Math.floor(Math.random() * findResult.length);
+                insertWarpToTable(findResult[randomIndex]);
                 addWarpItem(findResult[randomIndex]);
                 console.log("Warp: SSR");
             }
@@ -150,11 +175,13 @@ Warp_1_Btn.addEventListener('click', () => {
                 const findResult = fireflyBannerData.data.filter(item => item.rarity === 2 && item.rate_up === 1);
                 
                 const randomIndex = Math.floor(Math.random() * findResult.length);
+                insertWarpToTable(findResult[randomIndex]);
                 addWarpItem(findResult[randomIndex]);
             } else {
                 const findResult = fireflyBannerData.data.filter(item => item.rarity === 2 && item.rate_up === 0);
                 
                 const randomIndex = Math.floor(Math.random() * findResult.length);
+                insertWarpToTable(findResult[randomIndex]);
                 addWarpItem(findResult[randomIndex]);
             }
 
@@ -163,6 +190,7 @@ Warp_1_Btn.addEventListener('click', () => {
             const findResult = fireflyBannerData.data.filter(item => item.rarity === 1);
                 
             const randomIndex = Math.floor(Math.random() * findResult.length);
+            insertWarpToTable(findResult[randomIndex]);
             addWarpItem(findResult[randomIndex]);
 
             break;
@@ -177,7 +205,7 @@ function warp() {
         return "SSR";
     }
 
-    if (randomNum < 0.57) {
+    if (randomNum < 0.057) {
         return "SR";
     }
 
@@ -221,6 +249,7 @@ function addWarpItem(entity) {
 
     // h4
     const newH4 = document.createElement('h4');
+    newH4.className = 'flex';
     newH4.innerHTML = entity.entity_name;
 
     // Add elements to their parents
@@ -229,3 +258,34 @@ function addWarpItem(entity) {
     WarpItemsWrapper.appendChild(newDiv);
 }
 
+function insertWarpToTable(entity) {
+    const body_data = {
+        user_uid: uid,
+        entity_id: entity.entity_id,
+        banner_id: entity.banner_id
+    };
+
+    console.log(JSON.stringify(body_data));
+
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json' // Set the content type to JSON
+        },
+        body: JSON.stringify(body_data) // Convert the data object to a JSON string
+    };
+    
+    fetch('http://localhost/gacha-simulator/api/warp/create.php', options)
+    .then(response => {
+            if(!response.ok) {
+                throw new Error("Network response was not ok " + response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Success:', data);
+        })
+        .catch(error => {
+            console.error("There was a problem with the fetch operation:", error);
+        });
+}
