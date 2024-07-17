@@ -278,11 +278,40 @@ header {
     padding: 1rem 1rem;
     margin-top: 3rem;
     flex-wrap: wrap;
-    overflow: hidden;
+    overflow-y: visible;
 }
 
-#warp-records h5 {
+#warp-records #record-infos {
+    justify-content: space-around;
+}
+
+#warp-records div h5 {
     letter-spacing: 2px !important;
+}
+
+#warp-items-wrapper {
+    position: relative;
+    overflow: visible;
+}
+
+#warp-items-wrapper .warp-records-info {
+    position: absolute;
+    color: #fff;
+    z-index: 999;
+    display: flex;
+    transform: translateY(-100%);
+    align-items: center;
+    padding: 0.5rem 1rem;
+}
+
+#warp-items-wrapper #total-warps {
+    top: 0;
+    left: 0;
+}
+
+#warp-items-wrapper #total-stellar-jade {
+    top: 0;
+    right: 0;
 }
 
 .warp-item {
@@ -323,6 +352,30 @@ header {
     margin: auto;
     height: 40px;
     align-items: center;
+}
+
+/* PAGINATION */
+
+#pagination-control {
+    margin-top: 2rem;
+}
+
+#pagination-control button {
+    font-weight: 600;
+    background-color: rgba(255, 255, 255, 0);
+    color: #fff;
+    border: 0 solid #fff;
+    transition: var(--trans);
+    padding: 0.75rem 0.5rem;
+    border-radius: 1rem;
+}
+
+#pagination-control button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+#pagination-control span {
+    font-weight: 600;
 }
 
 /* FOOTER */

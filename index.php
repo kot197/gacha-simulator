@@ -63,8 +63,23 @@
     </header>
     <section id="warp-records">
         <h1>Warp Records</h3>
-        <h5>UID: <span id="uid">xxxx</span></h5>
+        <div class="flex">
+            <h5>UID: <span id="uid">xxxx</span></h5>
+        </div>
         <div id="warp-items-wrapper" class="container flex">
+            <div id="total-warps" class="warp-records-info">
+                <h4>145</h4>
+                <img src="assets/Item_Star_Rail_Special_Pass.webp" alt="Icon" width="40" height="40">
+            </div>
+            <div id="total-stellar-jade" class="warp-records-info">
+                <h4>20000</h4>
+                <img src="assets/Item_Stellar_Jade.webp" alt="Icon" width="40" height="40">
+            </div>
+        </div>
+        <div id="pagination-control">
+            <button id="prev-page">< Prev</button>
+            <span id="page-numbers">1 / 6 </span>
+            <button id="next-page">Next ></button>
         </div>
     </section>
     <footer>
