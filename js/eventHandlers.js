@@ -1,4 +1,6 @@
 
+import { warp, addWarpItem, insertWarpToTable } from './core.js';
+
 const StartWarpBtn = document.getElementById('start-btn');
 const Video = document.getElementById('video');
 const HeaderWrapper = document.getElementById('header-wrapper');
@@ -7,6 +9,9 @@ const Banners = document.getElementById('banners');
 const LimitedBanner = document.getElementById('limited-banner');
 const StandardBanner = document.getElementById('standard-banner');
 const WarpWrapper = document.getElementById('warp-wrapper');
+
+const Warp_1_Btn = document.getElementById('warp_x1');
+const Warp_10_Btn = document.getElementById('warp_x10');
 
 export function setupEventHandlers(fireflyBannerData, uid) {
     StartWarpBtn.addEventListener('click', () => {
@@ -83,6 +88,7 @@ export function setupEventHandlers(fireflyBannerData, uid) {
     
                 break;
             case "R":
+                console.log(fireflyBannerData);
                 const findResult = fireflyBannerData.data.filter(item => item.rarity === 1);
                     
                 const randomIndex = Math.floor(Math.random() * findResult.length);

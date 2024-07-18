@@ -23,6 +23,7 @@
         // Entity array
         $warps_arr = array();
         $warps_arr['data'] = array();
+        $warps_arr['extra'] = array();
 
         while($row = $result->fetch(PDO::FETCH_ASSOC)) {
             extract($row);
@@ -37,6 +38,13 @@
             // Push to "data"
             array_push($warps_arr['data'], $warp_item);
         }
+
+        $count = array(
+            'count' => $num
+        );
+
+        // Push Row Count
+        array_push($warps_arr['extra'], $count);
 
         // Turn to JSON & output
         echo json_encode($warps_arr);

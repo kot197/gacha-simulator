@@ -66,4 +66,18 @@ class Warp {
 
         return false;
     }
+
+    // Count Rows in Warp Table
+    public function count() {
+        $query = "SELECT COUNT(*) AS count
+                    FROM " . $this->table;
+
+        // Prepared statement
+        $stmt = $this->conn->prepare($query);
+
+        // Execute query
+        $stmt->execute();
+
+        return $stmt;
+    }
 }

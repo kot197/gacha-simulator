@@ -5,8 +5,7 @@ import { setupEventHandlers } from './eventHandlers.js';
 
 const UIDText = document.getElementById('uid');
 
-const Warp_1_Btn = document.getElementById('warp_x1');
-const Warp_10_Btn = document.getElementById('warp_x10');
+const TotalWarpsH4 = document.querySelector('#total-warps h4');
 
 let fireflyBannerData;
 let uid;
@@ -82,11 +81,19 @@ if(isEmpty(fireflyBannerData)) {
                     .then(data => {
                         warpRecords = data;
                         console.log(warpRecords);
+
+                        // Add each warp to DOM
                         warpRecords.data.forEach(warp => {
                             const findResult = fireflyBannerData.data.find(item => item.entity_id === warp.entity_id);
 
                             addWarpItem(findResult);
                         });
+
+                        // Update total warp count on h4
+                        TotalWarpsH4.innerHTML = warpRecords.extra[0].count;
+
+                        // Setup event handlers
+                        setupEventHandlers(fireflyBannerData, uid);
                     })
                     .catch(error => {
                         console.error("There was a problem with the fetch operation:", error);
@@ -97,5 +104,3 @@ if(isEmpty(fireflyBannerData)) {
             console.error("There was a problem with the fetch operation:", error);
         });
 }
-
-setupEventHandlers(fireflyBannerData, uid);
