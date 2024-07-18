@@ -78,7 +78,7 @@
         </div>
         <div id="pagination-control">
             <button id="prev-page">< Prev</button>
-            <span id="page-numbers">1 / 6 </span>
+            <span id="page-numbers">1 / 6</span>
             <button id="next-page">Next ></button>
         </div>
     </section>
@@ -88,6 +88,6 @@
         </div>
     </footer>
     <!-- js -->
-    <script src = "js/script.js"></script>
+    <script src = "js/script.js" type="module"></script>
 </body>
 </html>
