@@ -6,6 +6,7 @@ import { setupEventHandlers } from './eventHandlers.js';
 const UIDText = document.getElementById('uid');
 
 const TotalWarpsH4 = document.querySelector('#total-warps h4');
+const TotalStellarJadeH4 = document.querySelector('#total-stellar-jade h4');
 
 let fireflyBannerData;
 let uid;
@@ -91,6 +92,7 @@ if(isEmpty(fireflyBannerData)) {
 
                         // Update total warp count on h4
                         TotalWarpsH4.innerHTML = warpRecords.extra[0].count;
+                        TotalStellarJadeH4.innerHTML = warpRecords.extra[0].count * 160;
 
                         // Setup event handlers
                         setupEventHandlers(fireflyBannerData, uid);

@@ -1,5 +1,7 @@
 let basePath = 'C:\\xampp\\htdocs\\gacha-simulator\\';
 const WarpItemsWrapper = document.getElementById('warp-items-wrapper');
+const TotalWarpsH4 = document.querySelector('#total-warps h4');
+const TotalStellarJadeH4 = document.querySelector('#total-stellar-jade h4');
 
 export function addWarpItem(entity) {
     // div
@@ -37,7 +39,7 @@ export function addWarpItem(entity) {
     WarpItemsWrapper.appendChild(newDiv);
 }
 
-export function insertWarpToTable(entity, uid) {
+export async function insertWarpToTable(entity, uid) {
     const body_data = {
         user_uid: uid,
         entity_id: entity.entity_id,
@@ -59,10 +61,27 @@ export function insertWarpToTable(entity, uid) {
             if(!response.ok) {
                 throw new Error("Network response was not ok " + response.statusText);
             }
+
             return response.json();
         })
         .then(data => {
             console.log('Success:', data);
+
+            fetch('http://localhost/gacha-simulator/api/warp/count.php')
+                .then(response => {
+                    if(!response.ok) {
+                        throw new Error("Network response was not ok " + response.statusText);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Success:', data);
+                    TotalWarpsH4.innerHTML = data.data[0].count;
+                    TotalStellarJadeH4.innerHTML = data.data[0].count * 160;
+                })
+                .catch(error => {
+                    console.error("There was a problem with the fetch operation:", error);
+                });
         })
         .catch(error => {
             console.error("There was a problem with the fetch operation:", error);

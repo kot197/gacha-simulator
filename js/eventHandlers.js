@@ -50,7 +50,7 @@ export function setupEventHandlers(fireflyBannerData, uid) {
         }
     });
 
-    Warp_1_Btn.addEventListener('click', () => {
+    Warp_1_Btn.addEventListener('click', async () => {
         switch(warp()) {
             case "SSR":
                 // 50/50
