@@ -10,6 +10,8 @@ class Warp {
     public $entity_id;
     public $banner_id;
     public $created_at;
+    public $warp_limit;
+    public $warp_skip;
 
     // Constructor with DB
     public function __construct($db){
@@ -24,6 +26,28 @@ class Warp {
 
         // Prepare statement
         $stmt = $this->conn->prepare($query);
+
+        // Execute query
+        $stmt->execute();
+
+        return $stmt;
+    }
+
+    // Get a set of Warps on single banner based on page param
+    public function read_banner_page() {
+        // Create Query
+        $query = 'SELECT * FROM `warp_records`
+	                WHERE banner_id = :banner_id
+                    ORDER BY created_at ASC, warp_id ASC
+                    LIMIT :warp_limit OFFSET :warp_skip';
+
+        // Prepare statement
+        $stmt = $this->conn->prepare($query);
+
+        // Clean data
+        $this->
+
+        // Bind data
 
         // Execute query
         $stmt->execute();
