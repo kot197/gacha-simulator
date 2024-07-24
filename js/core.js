@@ -1,7 +1,12 @@
+import { warpRecordObject } from './script.js';
+import { setupEventHandlers } from './eventHandlers.js';
+
 let basePath = 'C:\\xampp\\htdocs\\gacha-simulator\\';
 const WarpItemsWrapper = document.getElementById('warp-items-wrapper');
 const TotalWarpsH4 = document.querySelector('#total-warps h4');
 const TotalStellarJadeH4 = document.querySelector('#total-stellar-jade h4');
+const PrevPageButton = document.getElementById('prev-page');
+const NextPageButton = document.getElementById('next-page');
 
 export function addWarpItem(entity) {
     // div
@@ -67,21 +72,7 @@ export async function insertWarpToTable(entity, uid) {
         .then(data => {
             console.log('Success:', data);
 
-            fetch('http://localhost/gacha-simulator/api/warp/count.php')
-                .then(response => {
-                    if(!response.ok) {
-                        throw new Error("Network response was not ok " + response.statusText);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    console.log('Success:', data);
-                    TotalWarpsH4.innerHTML = data.data[0].count;
-                    TotalStellarJadeH4.innerHTML = data.data[0].count * 160;
-                })
-                .catch(error => {
-                    console.error("There was a problem with the fetch operation:", error);
-                });
+            countWarps()
         })
         .catch(error => {
             console.error("There was a problem with the fetch operation:", error);
@@ -100,4 +91,56 @@ export function warp() {
     }
 
     return "R";
+}
+
+export function countWarps() {
+    fetch('http://localhost/gacha-simulator/api/warp/count.php')
+                .then(response => {
+                    if(!response.ok) {
+                        throw new Error("Network response was not ok " + response.statusText);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Success:', data);
+                    TotalWarpsH4.innerHTML = data.data[0].count;
+                    TotalStellarJadeH4.innerHTML = data.data[0].count * 160;
+                })
+                .catch(error => {
+                    console.error("There was a problem with the fetch operation:", error);
+                });
+}
+
+export function loadWarpRecord(fireflyBannerData, uid) {
+    fetch('http://localhost/gacha-simulator/api/warp/read.php?id=${warpRecordObject.currentBannerID}&limit=${warpRecordObject.limit}&skip=${warpRecordObject.skip}')
+                    .then(response => {
+                        if(!response.ok) {
+                            throw new Error("Network response was not ok " + response.statusText);
+                        }
+                        console.log(response);
+                        return response.json();
+                    })
+                    .then(data => {
+                        warpRecordObject.warpRecords = data;
+                        // console.log(warpRecords);
+
+                        // Add each warp to DOM
+                        warpRecordObject.warpRecords.data.forEach(warp => {
+                            const findResult = fireflyBannerData.data.find(item => item.entity_id === warp.entity_id);
+
+                            addWarpItem(findResult);
+                        });
+
+                        // Update total warp count on h4
+                        countWarps();
+
+                        // Setup event handlers
+                        setupEventHandlers(fireflyBannerData, uid);
+
+                        // Disables next button on first page
+                        PrevPageButton.toggleAttribute('disabled');
+                    })
+                    .catch(error => {
+                        console.error("There was a problem with the fetch operation:", error);
+                    });
 }

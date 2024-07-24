@@ -378,6 +378,12 @@ header {
     font-weight: 600;
 }
 
+#pagination-control button:disabled {
+    color: #666666;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
 /* FOOTER */
 footer {
     padding: 4rem 0;

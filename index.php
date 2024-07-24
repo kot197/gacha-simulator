@@ -77,7 +77,7 @@
             </div>
         </div>
         <div id="pagination-control">
-            <button id="prev-page">< Prev</button>
+            <button id="prev-page" disabled>< Prev</button>
             <span id="page-numbers">1 / 6</span>
             <button id="next-page">Next ></button>
         </div>

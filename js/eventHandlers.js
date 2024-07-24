@@ -13,6 +13,9 @@ const WarpWrapper = document.getElementById('warp-wrapper');
 const Warp_1_Btn = document.getElementById('warp_x1');
 const Warp_10_Btn = document.getElementById('warp_x10');
 
+const PrevPageButton = document.getElementById('prev-page');
+const NextPageButton = document.getElementById('next-page');
+
 export function setupEventHandlers(fireflyBannerData, uid) {
     StartWarpBtn.addEventListener('click', () => {
         Video.classList.toggle("hide");
@@ -48,6 +51,14 @@ export function setupEventHandlers(fireflyBannerData, uid) {
         } else {
             WarpWrapper.style.animation = "pull-back-right 1s";
         }
+    });
+
+    PrevPageButton.addEventListener('click', () => {
+
+    });
+
+    NextPageButton.addEventListener('click', () => {
+        
     });
 
     Warp_1_Btn.addEventListener('click', async () => {

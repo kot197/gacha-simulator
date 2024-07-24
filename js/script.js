@@ -1,17 +1,24 @@
 
 import { isEmpty } from './utility.js';
-import { addWarpItem, insertWarpToTable, warp } from './core.js';
+import { addWarpItem, insertWarpToTable, warp, countWarps, loadWarpRecord } from './core.js';
 import { setupEventHandlers } from './eventHandlers.js';
 
 const UIDText = document.getElementById('uid');
 
 const TotalWarpsH4 = document.querySelector('#total-warps h4');
 const TotalStellarJadeH4 = document.querySelector('#total-stellar-jade h4');
+const PrevPageButton = document.getElementById('prev-page');
+const NextPageButton = document.getElementById('next-page');
 
 let fireflyBannerData;
 let uid;
 
-let warpRecords;
+export const warpRecordObject = {
+    currentBannerID: 2,
+    limit: 100,
+    skip: 0,
+    warpRecords: {}
+  };
 
 // Check if there is support for local storage
 if (typeof(Storage) !== "undefined") {
@@ -70,36 +77,8 @@ if(isEmpty(fireflyBannerData)) {
             fireflyBannerData = data;
             console.log(fireflyBannerData);
 
-            if(isEmpty(warpRecords)) {
-                fetch('http://localhost/gacha-simulator/api/warp/read.php')
-                    .then(response => {
-                        if(!response.ok) {
-                            throw new Error("Network response was not ok " + response.statusText);
-                        }
-                        console.log(response);
-                        return response.json();
-                    })
-                    .then(data => {
-                        warpRecords = data;
-                        console.log(warpRecords);
-
-                        // Add each warp to DOM
-                        warpRecords.data.forEach(warp => {
-                            const findResult = fireflyBannerData.data.find(item => item.entity_id === warp.entity_id);
-
-                            addWarpItem(findResult);
-                        });
-
-                        // Update total warp count on h4
-                        TotalWarpsH4.innerHTML = warpRecords.extra[0].count;
-                        TotalStellarJadeH4.innerHTML = warpRecords.extra[0].count * 160;
-
-                        // Setup event handlers
-                        setupEventHandlers(fireflyBannerData, uid);
-                    })
-                    .catch(error => {
-                        console.error("There was a problem with the fetch operation:", error);
-                    });
+            if(isEmpty(warpRecordObject.warpRecords)) {
+                loadWarpRecord(fireflyBannerData, uid);
             }
         })
         .catch(error => {
