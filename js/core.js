@@ -8,6 +8,7 @@ const TotalWarpsH4 = document.querySelector('#total-warps h4');
 const TotalStellarJadeH4 = document.querySelector('#total-stellar-jade h4');
 const PrevPageButton = document.getElementById('prev-page');
 const NextPageButton = document.getElementById('next-page');
+const PageNumbersSpan = document.getElementById('page-numbers');
 
 export function addWarpItem(entity) {
     // div
@@ -105,6 +106,14 @@ export function countWarps() {
                 .then(data => {
                     TotalWarpsH4.innerHTML = data.data[0].count;
                     TotalStellarJadeH4.innerHTML = data.data[0].count * 160;
+
+                    if((warpRecordObject.skip + warpRecordObject.limit) >= data.data[0].count && !NextPageButton.hasAttribute('disabled')) {
+                        NextPageButton.toggleAttribute('disabled');
+                    }  else if ((warpRecordObject.skip + warpRecordObject.limit) < data.data[0].count && NextPageButton.hasAttribute('disabled')) {
+                        NextPageButton.toggleAttribute('disabled');
+                    }
+
+                    PageNumbersSpan.innerHTML = `${(warpRecordObject.skip/warpRecordObject.limit)+1} / ${Math.ceil(data.data[0].count/warpRecordObject.limit)}`;
                 })
                 .catch(error => {
                     console.error("There was a problem with the fetch operation:", error);
