@@ -10,29 +10,31 @@ const TotalStellarJadeH4 = document.querySelector('#total-stellar-jade h4');
 const PrevPageButton = document.getElementById('prev-page');
 const NextPageButton = document.getElementById('next-page');
 
-let fireflyBannerData;
-let uid;
+export const dataObject = {
+    fireflyBannerData: {},
+    uid: ''
+};
 
 export const warpRecordObject = {
     currentBannerID: 2,
-    limit: 100,
+    limit: 50,
     skip: 0,
     warpRecords: {}
-  };
+};
 
 // Check if there is support for local storage
 if (typeof(Storage) !== "undefined") {
-    uid = localStorage.getItem("uid");
+    dataObject.uid = localStorage.getItem("uid");
 
     // Check if uid exists in local storage
-    if(isEmpty(uid)) {
+    if(isEmpty(dataObject.uid)) {
         // Store
         localStorage.setItem("uid", crypto.randomUUID());
-        uid = localStorage.getItem("uid");
+        dataObject.uid = localStorage.getItem("uid");
 
         // Body data to be send in POST request
         let body_data = {
-            user_uid: uid
+            user_uid: dataObject.uid
         }
 
         const options = {
@@ -59,27 +61,30 @@ if (typeof(Storage) !== "undefined") {
     }
 
     // Retrieve
-    UIDText.innerHTML = uid;
+    UIDText.innerHTML = dataObject.uid;
 } else {
     // Sorry! No Web Storage support..
 }
 
-if(isEmpty(fireflyBannerData)) {
+if(isEmpty(dataObject.fireflyBannerData)) {
     fetch('http://localhost/gacha-simulator/api/entity/read_banner.php?banner_name=Firefly%20Banner')
         .then(response => {
             if(!response.ok) {
                 throw new Error("Network response was not ok " + response.statusText);
             }
-            console.log(response);
             return response.json();
         })
         .then(data => {
-            fireflyBannerData = data;
-            console.log(fireflyBannerData);
+            dataObject.fireflyBannerData = data;
 
             if(isEmpty(warpRecordObject.warpRecords)) {
-                loadWarpRecord(fireflyBannerData, uid);
+                loadWarpRecord(dataObject.fireflyBannerData);
             }
+
+            console.log('setup event handler');
+
+            // Setup event handlers
+            setupEventHandlers();
         })
         .catch(error => {
             console.error("There was a problem with the fetch operation:", error);

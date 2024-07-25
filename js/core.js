@@ -1,5 +1,6 @@
-import { warpRecordObject } from './script.js';
+import { warpRecordObject, dataObject } from './script.js';
 import { setupEventHandlers } from './eventHandlers.js';
+import { removeElementsExceptByIds } from './utility.js';
 
 let basePath = 'C:\\xampp\\htdocs\\gacha-simulator\\';
 const WarpItemsWrapper = document.getElementById('warp-items-wrapper');
@@ -44,9 +45,9 @@ export function addWarpItem(entity) {
     WarpItemsWrapper.appendChild(newDiv);
 }
 
-export async function insertWarpToTable(entity, uid) {
+export async function insertWarpToTable(entity) {
     const body_data = {
-        user_uid: uid,
+        user_uid: dataObject.uid,
         entity_id: entity.entity_id,
         banner_id: entity.banner_id
     };
@@ -102,7 +103,6 @@ export function countWarps() {
                     return response.json();
                 })
                 .then(data => {
-                    console.log('Success:', data);
                     TotalWarpsH4.innerHTML = data.data[0].count;
                     TotalStellarJadeH4.innerHTML = data.data[0].count * 160;
                 })
@@ -111,22 +111,23 @@ export function countWarps() {
                 });
 }
 
-export function loadWarpRecord(fireflyBannerData, uid) {
-    fetch('http://localhost/gacha-simulator/api/warp/read.php?id=${warpRecordObject.currentBannerID}&limit=${warpRecordObject.limit}&skip=${warpRecordObject.skip}')
+export function loadWarpRecord() {
+    fetch(`http://localhost/gacha-simulator/api/warp/read_banner_page.php?id=${warpRecordObject.currentBannerID}&limit=${warpRecordObject.limit}&skip=${warpRecordObject.skip}`)
                     .then(response => {
                         if(!response.ok) {
                             throw new Error("Network response was not ok " + response.statusText);
                         }
-                        console.log(response);
                         return response.json();
                     })
                     .then(data => {
                         warpRecordObject.warpRecords = data;
-                        // console.log(warpRecords);
+
+                        // Clean warp record first
+                        removeElementsExceptByIds(WarpItemsWrapper.id, ['total-warps', 'total-stellar-jade']);
 
                         // Add each warp to DOM
                         warpRecordObject.warpRecords.data.forEach(warp => {
-                            const findResult = fireflyBannerData.data.find(item => item.entity_id === warp.entity_id);
+                            const findResult = dataObject.fireflyBannerData.data.find(item => item.entity_id === warp.entity_id);
 
                             addWarpItem(findResult);
                         });
@@ -134,11 +135,11 @@ export function loadWarpRecord(fireflyBannerData, uid) {
                         // Update total warp count on h4
                         countWarps();
 
-                        // Setup event handlers
-                        setupEventHandlers(fireflyBannerData, uid);
-
-                        // Disables next button on first page
-                        PrevPageButton.toggleAttribute('disabled');
+                        if(warpRecordObject.skip < warpRecordObject.limit && !PrevPageButton.hasAttribute('disabled')) {
+                            PrevPageButton.toggleAttribute('disabled');
+                        } else if (warpRecordObject.skip >= warpRecordObject.limit && PrevPageButton.hasAttribute('disabled')) {
+                            PrevPageButton.toggleAttribute('disabled');
+                        }
                     })
                     .catch(error => {
                         console.error("There was a problem with the fetch operation:", error);

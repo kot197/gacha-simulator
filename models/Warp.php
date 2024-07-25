@@ -36,18 +36,24 @@ class Warp {
     // Get a set of Warps on single banner based on page param
     public function read_banner_page() {
         // Create Query
-        $query = 'SELECT * FROM `warp_records`
+        $query = "SELECT * FROM warp_records
 	                WHERE banner_id = :banner_id
                     ORDER BY created_at ASC, warp_id ASC
-                    LIMIT :warp_limit OFFSET :warp_skip';
+                    LIMIT :warp_limit OFFSET :warp_skip
+                    ";
 
         // Prepare statement
         $stmt = $this->conn->prepare($query);
 
         // Clean data
-        $this->
+        $this->banner_id = htmlspecialchars(strip_tags($this->banner_id));
+        $this->warp_limit = (int) htmlspecialchars(strip_tags($this->warp_limit));
+        $this->warp_skip = (int) htmlspecialchars(strip_tags($this->warp_skip));
 
         // Bind data
+        $stmt->bindParam(':banner_id', $this->banner_id);
+        $stmt->bindParam(':warp_limit', $this->warp_limit, PDO::PARAM_INT);
+        $stmt->bindParam(':warp_skip', $this->warp_skip, PDO::PARAM_INT);
 
         // Execute query
         $stmt->execute();

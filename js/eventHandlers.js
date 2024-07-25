@@ -1,5 +1,6 @@
 
-import { warp, addWarpItem, insertWarpToTable } from './core.js';
+import { warp, addWarpItem, insertWarpToTable, loadWarpRecord } from './core.js';
+import { warpRecordObject, dataObject } from './script.js';
 
 const StartWarpBtn = document.getElementById('start-btn');
 const Video = document.getElementById('video');
@@ -16,8 +17,9 @@ const Warp_10_Btn = document.getElementById('warp_x10');
 const PrevPageButton = document.getElementById('prev-page');
 const NextPageButton = document.getElementById('next-page');
 
-export function setupEventHandlers(fireflyBannerData, uid) {
+export function setupEventHandlers() {
     StartWarpBtn.addEventListener('click', () => {
+        console.log('clicked start warp');
         Video.classList.toggle("hide");
         HeaderWrapper.style.display = "none";
     
@@ -54,11 +56,15 @@ export function setupEventHandlers(fireflyBannerData, uid) {
     });
 
     PrevPageButton.addEventListener('click', () => {
-
+        warpRecordObject.skip -= warpRecordObject.limit;
+        console.log(warpRecordObject.skip);
+        loadWarpRecord();
     });
 
     NextPageButton.addEventListener('click', () => {
-        
+        warpRecordObject.skip += warpRecordObject.limit;
+        console.log(warpRecordObject.skip)
+        loadWarpRecord();
     });
 
     Warp_1_Btn.addEventListener('click', async () => {
@@ -66,16 +72,16 @@ export function setupEventHandlers(fireflyBannerData, uid) {
             case "SSR":
                 // 50/50
                 if(Math.random() < 0.5) {
-                    const findResult = fireflyBannerData.data.find(item => item.entity_name === 'Firefly');
+                    const findResult = dataObject.fireflyBannerData.data.find(item => item.entity_name === 'Firefly');
                     
-                    insertWarpToTable(findResult, uid);
+                    insertWarpToTable(findResult);
                     addWarpItem(findResult);
                     console.log("Warp: Firefly");
                 } else {
-                    const findResult = fireflyBannerData.data.filter(item => item.rarity === 3 && item.rate_up === 1);
+                    const findResult = dataObject.fireflyBannerData.data.filter(item => item.rarity === 3 && item.rate_up === 1);
                     
                     const randomIndex = Math.floor(Math.random() * findResult.length);
-                    insertWarpToTable(findResult[randomIndex], uid);
+                    insertWarpToTable(findResult[randomIndex]);
                     addWarpItem(findResult[randomIndex]);
                     console.log("Warp: SSR");
                 }
@@ -84,26 +90,25 @@ export function setupEventHandlers(fireflyBannerData, uid) {
             case "SR":
                 // 50/50
                 if(Math.random() < 0.5) {
-                    const findResult = fireflyBannerData.data.filter(item => item.rarity === 2 && item.rate_up === 1);
+                    const findResult = dataObject.fireflyBannerData.data.filter(item => item.rarity === 2 && item.rate_up === 1);
                     
                     const randomIndex = Math.floor(Math.random() * findResult.length);
-                    insertWarpToTable(findResult[randomIndex], uid);
+                    insertWarpToTable(findResult[randomIndex]);
                     addWarpItem(findResult[randomIndex]);
                 } else {
-                    const findResult = fireflyBannerData.data.filter(item => item.rarity === 2 && item.rate_up === 0);
+                    const findResult = dataObject.fireflyBannerData.data.filter(item => item.rarity === 2 && item.rate_up === 0);
                     
                     const randomIndex = Math.floor(Math.random() * findResult.length);
-                    insertWarpToTable(findResult[randomIndex], uid);
+                    insertWarpToTable(findResult[randomIndex]);
                     addWarpItem(findResult[randomIndex]);
                 }
     
                 break;
             case "R":
-                console.log(fireflyBannerData);
-                const findResult = fireflyBannerData.data.filter(item => item.rarity === 1);
+                const findResult = dataObject.fireflyBannerData.data.filter(item => item.rarity === 1);
                     
                 const randomIndex = Math.floor(Math.random() * findResult.length);
-                insertWarpToTable(findResult[randomIndex], uid);
+                insertWarpToTable(findResult[randomIndex]);
                 addWarpItem(findResult[randomIndex]);
     
                 break;
