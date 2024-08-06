@@ -1,5 +1,4 @@
 # A simulator for gacha rolls in Honkai Star Rail
----
 Made in:
 * Javascript
 * CSS
